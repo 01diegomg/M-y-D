@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover">
+    <meta name="theme-color" content="#2d1f3d">
+    <meta name="mobile-web-app-capable" content="yes">
+
+    <!-- ====================================================================
+         TITULO DE LA PAGINA (aparece en la pestana del navegador)
+         Cambia el texto entre <title> y </title>
+    ==================================================================== -->
+    <title>Para Ti, Mi Amor</title>
+
+    <!-- Enlace al archivo de estilos CSS -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- ================================================================
+         FONDO DE CORAZONES ROMANTICOS
+         - Los corazones se generan automaticamente con JavaScript
+    ================================================================ -->
+    <div class="hearts-background" id="heartsBackground"></div>
+
+    <!-- Contenedor de corazones flotantes -->
+    <div id="hearts-container"></div>
+
+    <!-- ================================================================
+         REPRODUCTOR DE MUSICA
+         - Pon tus canciones en la carpeta /musica/
+         - Configura la playlist en config.js
+    ================================================================ -->
+    <div class="music-player-container">
+        <button class="music-player-toggle" id="musicToggle" onclick="toggleMusicPanel()">
+            <span class="music-icon">&#127926;</span>
+            <span id="musicToggleText">Nuestra Playlist</span>
+        </button>
+
+        <div class="music-player-panel" id="musicPanel">
+            <div class="music-player-info">
+                <div class="music-player-disc" id="musicDisc">
+                    <div class="music-player-disc-inner"></div>
+                </div>
+                <div class="music-song-title" id="songTitle">Selecciona una cancion</div>
+                <div class="music-song-artist" id="songArtist">---</div>
+            </div>
+
+            <div class="music-progress-container">
+                <div class="music-progress-bar" id="progressBar" onclick="seekMusic(event)">
+                    <div class="music-progress-fill" id="progressFill"></div>
+                </div>
+                <div class="music-time">
+                    <span id="currentTime">0:00</span>
+                    <span id="totalTime">0:00</span>
+                </div>
+            </div>
+
+            <div class="music-controls">
+                <button class="music-btn" onclick="prevSong()">&#9198;</button>
+                <button class="music-btn play-btn" id="playBtn" onclick="togglePlay()">&#9654;</button>
+                <button class="music-btn" onclick="nextSong()">&#9197;</button>
+            </div>
+
+            <div class="music-playlist" id="musicPlaylist">
+                <!-- Se genera desde JavaScript -->
+            </div>
+        </div>
+
+        <audio id="audioPlayer"></audio>
+    </div>
+
+    <div class="container">
+        <!-- ============================================================
+             TITULO PRINCIPAL
+             - Cambia el texto entre las etiquetas <h1> y </h1>
+        ============================================================ -->
+        <h1>Para Ti, Mi Amor</h1>
+
+        <!-- ============================================================
+             SECCION: CONTADOR DE TIEMPO JUNTOS
+             - La fecha de aniversario se configura en script.js
+             - Busca "FECHA_ANIVERSARIO" en script.js
+        ============================================================ -->
+        <div class="countdown-section">
+            <!-- Titulo del contador - cambia el texto aqui -->
+            <div class="countdown-title">Nuestro Tiempo Juntos</div>
+
+            <!-- Subtitulo del contador -->
+            <div class="countdown-subtitle" id="countdownSubtitle">Desde el 1 de septiembre de 2023...</div>
+
+            <div class="countdown-container">
+                <div class="countdown-box">
+                    <span class="countdown-number" id="years">00</span>
+                    <span class="countdown-label">Anios</span>
+                </div>
+                <div class="countdown-box">
+                    <span class="countdown-number" id="months">00</span>
+                    <span class="countdown-label">Meses</span>
+                </div>
+                <div class="countdown-box">
+                    <span class="countdown-number" id="days">00</span>
+                    <span class="countdown-label">Dias</span>
+                </div>
+                <div class="countdown-box">
+                    <span class="countdown-number" id="hours">00</span>
+                    <span class="countdown-label">Horas</span>
+                </div>
+                <div class="countdown-box">
+                    <span class="countdown-number" id="minutes">00</span>
+                    <span class="countdown-label">Minutos</span>
+                </div>
+                <div class="countdown-box">
+                    <span class="countdown-number" id="seconds">00</span>
+                    <span class="countdown-label">Segundos</span>
+                </div>
+            </div>
+
+            <!-- Mensaje que aparece en el aniversario -->
+            <div class="anniversary-message" id="anniversaryMessage" style="display: none;">
+                <p style="font-size: 1.3em; margin-top: 20px; padding: 15px; background: rgba(255,255,255,0.2); border-radius: 15px;">
+                    <!-- CAMBIA ESTE MENSAJE DE ANIVERSARIO -->
+                    Es poco tiempo, quiero estar contigo toda una eternidad gordita preciosa
+                </p>
+            </div>
+        </div>
+
+        <!-- ============================================================
+             SECCION: CARTA ANIMADA
+             - Haz click en el sobre para abrir la carta
+        ============================================================ -->
+        <div class="letter-section">
+            <h2 style="color: white; margin-bottom: 20px; text-shadow: 2px 2px 4px rgba(0,0,0,0.3);">Una Carta Para Ti</h2>
+            <p style="color: rgba(255,255,255,0.8); margin-bottom: 25px;">Haz click en el sobre para abrirlo...</p>
+
+            <!-- Sobre elegante estilo vintage -->
+            <div class="envelope-container" onclick="openLetter()">
+                <div class="envelope">
+                    <div class="envelope-back"></div>
+                    <div class="envelope-front"></div>
+                    <div class="envelope-flap"></div>
+
+                    <!-- Sello de cera con corazon -->
+                    <div class="envelope-seal">
+                        <div class="seal-circle">
+                            <span class="seal-heart">&#10084;</span>
+                        </div>
+                    </div>
+
+                    <!-- Texto en el sobre -->
+                    <div class="envelope-label">Para ti...</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ============================================================
+             TARJETA PRINCIPAL CON CORAZON INTERACTIVO
+        ============================================================ -->
+        <div class="card">
+            <!-- Texto principal - CAMBIA ESTE TEXTO -->
+            <p>Cada dia a tu lado es especial, y quiero recordarte lo mucho que significas para mi...</p>
+
+            <div class="big-heart" id="mainHeart" onclick="clickHeart()">&#10084;</div>
+
+            <!-- Contador de clicks mejorado -->
+            <div class="click-counter-container">
+                <div class="click-counter-heart">&#128149;</div>
+                <div class="click-counter-number" id="clickNumber">0</div>
+                <div class="click-counter-text">veces has tocado mi corazon</div>
+                <div class="click-counter-progress">
+                    <div class="click-counter-progress-bar" id="clickProgressBar" style="width: 0%"></div>
+                </div>
+                <div class="click-counter-milestone" id="nextMilestone">Siguiente: 10 clicks</div>
+            </div>
+
+            <!-- Otro texto - CAMBIA ESTE TEXTO -->
+            <p>Hice esta pagina especialmente para ti, porque eres la persona mas especial de mi vida.</p>
+        </div>
+
+        <!-- Boton de sorpresa -->
+        <button class="surprise-btn" onclick="revealSurprise()">
+            Click aqui para una sorpresa
+        </button>
+
+        <!-- ============================================================
+             MENSAJE OCULTO - RAZONES POR LAS QUE TE AMO
+             - Cambia cada razon en las etiquetas .reason-item
+        ============================================================ -->
+        <div class="hidden-message" id="hiddenMessage">
+            <h2>Razones por las que te amo</h2>
+            <div class="reasons">
+                <!-- CAMBIA ESTAS RAZONES - puedes agregar o quitar -->
+                <div class="reason-item">Tu sonrisa ilumina mis dias mas oscuros</div>
+                <div class="reason-item">Tu risa es mi cancion favorita</div>
+                <div class="reason-item">Contigo cada momento es una aventura</div>
+                <div class="reason-item">Eres mi mejor amiga y mi gran amor</div>
+                <div class="reason-item">Tu forma de ser me hace mejor persona</div>
+                <div class="reason-item">Simplemente por ser TU</div>
+            </div>
+        </div>
+
+        <!-- ============================================================
+             SECCION: VIDEO DE RECUERDOS
+             - Pon tu video en la carpeta /videos/
+             - Configura el nombre en config.js
+        ============================================================ -->
+        <div class="video-section">
+            <div class="video-title" id="videoTitle">Nuestros Videos Especiales</div>
+            <p class="video-subtitle" id="videoSubtitle">Recuerdos que guardo en mi corazón</p>
+
+            <!-- Navegación de videos -->
+            <div class="video-navigation">
+                <button class="video-nav-btn" id="prevVideoBtn" onclick="changeVideo(-1)">&#10094;</button>
+                <div class="video-indicator" id="videoIndicator">
+                    Video <span id="currentVideoNum">1</span> de <span id="totalVideos">1</span>
+                </div>
+                <button class="video-nav-btn" id="nextVideoBtn" onclick="changeVideo(1)">&#10095;</button>
+            </div>
+
+            <div class="video-container" id="videoContainer">
+                <span class="video-decoration">&#128149;</span>
+                <span class="video-decoration">&#10084;</span>
+                <span class="video-decoration">&#128150;</span>
+                <span class="video-decoration">&#128151;</span>
+
+                <div class="video-wrapper">
+                    <video id="mainVideo" playsinline>
+                        <source src="" type="video/mp4">
+                        Tu navegador no soporta videos.
+                    </video>
+                </div>
+                <div class="video-frame"></div>
+            </div>
+
+            <!-- Miniaturas de videos -->
+            <div class="video-thumbnails" id="videoThumbnails">
+                <!-- Se genera desde JavaScript -->
+            </div>
+        </div>
+
+        <!-- ============================================================
+             SECCION: GALERIA DE FOTOS
+             - Pon tus fotos en la carpeta /fotos/
+             - Configura los nombres en config.js
+        ============================================================ -->
+        <div class="gallery-section">
+            <div class="gallery-title">Nuestros Momentos Especiales</div>
+            <p class="gallery-subtitle">Cada foto guarda un recuerdo de nuestro amor</p>
+
+            <!-- Navegación de galería -->
+            <div class="gallery-navigation">
+                <button class="gallery-nav-btn" id="prevGalleryBtn" onclick="changeGalleryPage(-1)">&#10094;</button>
+                <div class="gallery-indicator">
+                    Página <span id="currentGalleryPage">1</span> de <span id="totalGalleryPages">1</span>
+                </div>
+                <button class="gallery-nav-btn" id="nextGalleryBtn" onclick="changeGalleryPage(1)">&#10095;</button>
+            </div>
+
+            <div class="gallery-grid" id="galleryGrid">
+                <!-- Las fotos se cargan desde JavaScript -->
+            </div>
+
+            <!-- Indicador de puntos -->
+            <div class="gallery-dots" id="galleryDots">
+                <!-- Se genera desde JavaScript -->
+            </div>
+        </div>
+
+        <!-- Modal para ver fotos en grande -->
+        <div class="photo-modal" id="photoModal">
+            <button class="close-photo-modal" onclick="closePhotoModal()">&times;</button>
+            <button class="photo-nav prev" onclick="prevPhoto()">&#10094;</button>
+            <img class="photo-modal-content" id="modalPhoto" src="" alt="Foto">
+            <button class="photo-nav next" onclick="nextPhoto()">&#10095;</button>
+            <div class="photo-modal-caption" id="modalCaption"></div>
+        </div>
+
+        <!-- ============================================================
+             SECCION: JUEGO MEMORAMA
+             - Encuentra las parejas para ganar premios
+             - Los premios se guardan en el navegador
+        ============================================================ -->
+        <div class="memorama-section">
+            <div class="memorama-header">
+                <div class="memorama-title">Memorama del Amor</div>
+                <div class="prizes-counter">
+                    Puntos: <span id="totalPoints">0</span>
+                </div>
+            </div>
+            <p style="margin-bottom: 20px; opacity: 0.9;">Encuentra todas las parejas y gana puntos! Acumula puntos para ganar premios!</p>
+
+            <div class="memorama-stats">
+                <div class="stat-box">Intentos: <span id="attempts">0</span></div>
+                <div class="stat-box">Parejas: <span id="pairs">0</span>/8</div>
+                <div class="stat-box">Puntos partida: <span id="currentGamePoints">0</span></div>
+            </div>
+
+            <div class="memorama-grid" id="memoramaGrid"></div>
+
+            <div class="memorama-controls">
+                <button class="memo-btn" onclick="resetMemorama()">Nuevo Juego</button>
+                <button class="memo-btn" onclick="togglePrizesTable()">Ver Premios</button>
+            </div>
+
+            <!-- Tabla de premios -->
+            <div class="prizes-table" id="prizesTable" style="display: none;">
+                <h3 style="margin-bottom: 15px;">&#128142; Tabla de Premios &#128142;</h3>
+                <div class="prizes-list" id="prizesList">
+                    <!-- Se genera desde JavaScript -->
+                </div>
+                <p style="font-size: 0.9em; margin-top: 15px; opacity: 0.8;">
+                    &#128151; Completa el memorama con menos intentos para ganar más puntos!
+                </p>
+            </div>
+        </div>
+
+        <!-- ============================================================
+             SECCION: RULETA DEL AMOR
+             - Los premios de la ruleta se configuran en script.js
+             - Busca "PREMIOS_RULETA" en script.js
+        ============================================================ -->
+        <div class="roulette-section">
+            <div class="roulette-title">Ruleta del Amor</div>
+            <p id="rouletteInstruction" style="opacity: 0.9;">Gira la ruleta y descubre algo especial!</p>
+
+            <div class="roulette-container">
+                <div class="roulette-pointer">&#9660;</div>
+                <div class="roulette-wheel" id="rouletteWheel"></div>
+                <div class="roulette-center">&#10084;</div>
+            </div>
+
+            <button class="spin-btn" id="spinBtn" onclick="spinRoulette()">
+                Girar Ruleta!
+            </button>
+
+            <!-- Cuenta regresiva -->
+            <div class="roulette-countdown" id="rouletteCountdown" style="display: none;">
+                <div class="countdown-icon">⏰</div>
+                <div class="countdown-text">Próximo giro disponible en:</div>
+                <div class="countdown-timer" id="countdownTimer">
+                    <span id="daysLeft">0</span>d
+                    <span id="hoursLeft">00</span>h
+                    <span id="minutesLeft">00</span>m
+                    <span id="secondsLeft">00</span>s
+                </div>
+            </div>
+
+            <div class="roulette-result" id="rouletteResult">
+                Presiona el boton para girar!
+            </div>
+        </div>
+
+        <!-- ============================================================
+             MENSAJE FINAL
+             - CAMBIA ESTE TEXTO
+        ============================================================ -->
+        <div class="final-message">
+            Gracias por ser mi companera, mi amor, mi todo.
+            <br><br>
+            Te amo hoy y siempre
+            <br><br>
+            <span style="font-size: 3em;">&#10084;</span>
+        </div>
+    </div>
+
+    <!-- ================================================================
+         MODAL DE CARTA ELEGANTE ESTILO PERGAMINO
+    ================================================================ -->
+    <div class="letter-modal" id="letterModal">
+        <div class="letter-fullscreen">
+            <!-- Decoraciones de esquinas -->
+            <div class="letter-corner letter-corner-tl"></div>
+            <div class="letter-corner letter-corner-tr"></div>
+            <div class="letter-corner letter-corner-bl"></div>
+            <div class="letter-corner letter-corner-br"></div>
+
+            <button class="close-letter" onclick="closeLetter()">&times;</button>
+
+            <div class="letter-header">
+                <h2>Mi Amor</h2>
+                <div class="letter-date">Para ti, con todo mi corazon</div>
+            </div>
+
+            <div class="letter-body">
+                Cada dia a tu lado es un regalo que atesoro con todo mi corazon.
+                <br><br>
+                Eres la luz que ilumina mi vida, la razon de mis sonrisas y el amor mas grande que he conocido.
+                <br><br>
+                Gracias por existir, por elegirme cada dia, por ser mi companera en esta aventura que llamamos vida.
+                <br><br>
+                Prometo amarte hoy, manana y siempre. Cada latido de mi corazon te pertenece.
+                <br><br>
+                Eres mi presente favorito y mi futuro sonado.
+            </div>
+
+            <div class="letter-footer">
+                Con todo mi amor, siempre tuyo &#10084;
+            </div>
+
+            <!-- Corazon decorativo -->
+            <div class="letter-heart-decoration">&#10084;</div>
+        </div>
+    </div>
+
+    <!-- Modal de Premio del Memorama -->
+    <div class="prize-modal" id="prizeModal">
+        <div class="prize-content">
+            <h2>FELICIDADES!</h2>
+            <div class="prize-emoji">&#127873;</div>
+            <p class="prize-text">Has ganado un premio canjeable en persona!</p>
+            <div class="prize-code" id="prizeCode">PREMIO-001</div>
+            <p style="color: #666; font-size: 0.9em;">Muestrale este codigo a tu amor para reclamar tu premio</p>
+            <button class="close-prize" onclick="closePrizeModal()">Entendido!</button>
+        </div>
+    </div>
+
+    <!-- Archivo de configuracion - EDITA AQUI TODOS LOS TEXTOS -->
+    <script src="config.js"></script>
+
+    <!-- Enlace al archivo de JavaScript -->
+    <script src="script.js"></script>
+</body>
+</html>
